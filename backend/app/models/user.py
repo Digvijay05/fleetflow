@@ -16,6 +16,7 @@ class RoleEnum(str, enum.Enum):
     DISPATCHER = "Dispatcher"
     SAFETY_OFFICER = "Safety Officer"
     FINANCIAL_ANALYST = "Financial Analyst"
+    CUSTOMER = "Customer"
 
 
 class Role(Base):

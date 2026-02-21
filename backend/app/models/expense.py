@@ -13,8 +13,8 @@ class Expense(Base):
     __tablename__ = "expenses"
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    vehicle_id: Mapped[str] = mapped_column(ForeignKey("vehicles.id"), nullable=False, index=True)
-    trip_id: Mapped[str] = mapped_column(ForeignKey("trips.id"), nullable=False, index=True)
+    vehicle_id: Mapped[str] = mapped_column(ForeignKey("vehicles.id", ondelete="RESTRICT"), nullable=False, index=True)
+    trip_id: Mapped[str] = mapped_column(ForeignKey("trips.id", ondelete="CASCADE"), nullable=False, index=True)
     fuel_liters: Mapped[float] = mapped_column(Numeric(10, 2), nullable=False)
     fuel_cost: Mapped[float] = mapped_column(Numeric(12, 2), nullable=False)
     date: Mapped[date] = mapped_column(Date, nullable=False)

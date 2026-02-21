@@ -10,8 +10,7 @@ from app.models.driver import Driver
 from app.models.user import RoleEnum, User
 from app.schemas.driver import DriverCreate, DriverResponse, DriverUpdate
 
-router = APIRouter(prefix="/drivers", tags=["drivers"])
-
+router = APIRouter(tags=["drivers"])
 
 @router.get("/", response_model=list[DriverResponse])
 async def list_drivers(db: AsyncSession = Depends(get_db)):

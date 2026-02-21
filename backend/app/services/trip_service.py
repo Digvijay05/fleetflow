@@ -97,7 +97,10 @@ class TripService:
         # --- Validate transition ---
         valid_transitions: dict[TripStatus, list[TripStatus]] = {
             TripStatus.DRAFT: [TripStatus.DISPATCHED, TripStatus.CANCELLED],
-            TripStatus.DISPATCHED: [TripStatus.COMPLETED],
+            TripStatus.DISPATCHED: [TripStatus.IN_TRANSIT, TripStatus.COMPLETED, TripStatus.CANCELLED],
+            TripStatus.IN_TRANSIT: [TripStatus.OUT_FOR_DELIVERY, TripStatus.COMPLETED, TripStatus.CANCELLED],
+            TripStatus.OUT_FOR_DELIVERY: [TripStatus.DELIVERED, TripStatus.COMPLETED, TripStatus.CANCELLED],
+            TripStatus.DELIVERED: [TripStatus.COMPLETED],
         }
         allowed = valid_transitions.get(trip.status, [])
         if target not in allowed:
@@ -105,7 +108,8 @@ class TripService:
 
         trip.status = target
 
-        if target == TripStatus.COMPLETED:
+        # Release vehicle and driver on terminal completion states
+        if target in (TripStatus.COMPLETED, TripStatus.DELIVERED, TripStatus.CANCELLED):
             trip.end_time = datetime.now(timezone.utc)
 
             vehicle = await db.get(Vehicle, trip.vehicle_id, with_for_update=True)

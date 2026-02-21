@@ -10,8 +10,7 @@ from app.models.user import RoleEnum, User
 from app.models.vehicle import Vehicle
 from app.schemas.vehicle import VehicleCreate, VehicleResponse, VehicleUpdate
 
-router = APIRouter(prefix="/vehicles", tags=["vehicles"])
-
+router = APIRouter(tags=["vehicles"])
 
 @router.get("/", response_model=list[VehicleResponse])
 async def list_vehicles(db: AsyncSession = Depends(get_db)):

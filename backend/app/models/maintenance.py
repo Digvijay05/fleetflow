@@ -24,7 +24,7 @@ class MaintenanceLog(Base):
     __tablename__ = "maintenance_logs"
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    vehicle_id: Mapped[str] = mapped_column(ForeignKey("vehicles.id"), nullable=False, index=True)
+    vehicle_id: Mapped[str] = mapped_column(ForeignKey("vehicles.id", ondelete="RESTRICT"), nullable=False, index=True)
     type: Mapped[MaintenanceType] = mapped_column(Enum(MaintenanceType), nullable=False)
     description: Mapped[str] = mapped_column(Text, nullable=True)
     cost: Mapped[float] = mapped_column(Numeric(12, 2), nullable=False)

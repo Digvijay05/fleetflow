@@ -15,6 +15,7 @@ class TripCreate(BaseModel):
     cargo_weight: int = Field(..., gt=0)
     distance_km: float | None = Field(default=None, ge=0)
     revenue: float | None = Field(default=None, ge=0)
+    customer_id: str | None = None
 
 
 class TripStatusUpdate(BaseModel):
@@ -26,6 +27,8 @@ class TripResponse(BaseModel):
     id: str
     vehicle_id: str
     driver_id: str
+    customer_id: str | None
+    tracking_id: str
     origin: str
     destination: str
     cargo_weight: int

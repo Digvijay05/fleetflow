@@ -9,8 +9,7 @@ from app.models.user import RoleEnum, User
 from app.schemas.trip import TripCreate, TripResponse, TripStatusUpdate
 from app.services.trip_service import TripService
 
-router = APIRouter(prefix="/trips", tags=["trips"])
-
+router = APIRouter(tags=["trips"])
 
 @router.get("/", response_model=list[TripResponse])
 async def list_trips(db: AsyncSession = Depends(get_db)):
