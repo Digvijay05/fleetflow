@@ -1,0 +1,7 @@
+selenium==4.27.1
+pytest==8.3.4
+pytest-html==4.1.1
+pytest-rerunfailures==14.0
+mss==9.0.2
+opencv-python-headless==4.10.0.84
+numpy==1.26.4
