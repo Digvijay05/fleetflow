@@ -480,7 +480,9 @@ Modern sans-serif (e.g., Inter, SF Pro)
 
 ### UI Components
 
-* Status Pills (Available, On Trip, In Shop, Retired, Suspended)
+* Status Pills
+  * Vehicle: Available, On Trip, In Shop, Retired
+  * Driver: On Duty, Off Duty, On Trip, Suspended
 * Dense data tables with zebra striping
 * Filter dropdown bars
 * Modal overlays

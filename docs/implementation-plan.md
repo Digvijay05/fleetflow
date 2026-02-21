@@ -60,8 +60,8 @@ The development strategy utilizes a modular, milestone-based approach focusing o
 * **Database Tables:** `users`, `roles`.
 * **Business Rules:** Password hashing (bcrypt), JWT expiration (1 hour).
 * **State Logic:** User authentication state.
-* **Validation Rules:** Request body validation (email format, password presence).
-* **Migrations:** Create users and roles tables, seed roles and super-admin user.
+* **Validation Rules:** Request body validation via Pydantic.
+* **Migrations:** Create users and roles tables via Alembic, seed roles and super-admin user.
 
 #### Frontend Scope
 * **Pages/components:** Login UI, Layout framework (Sidebar, Header).

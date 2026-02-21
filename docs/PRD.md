@@ -530,6 +530,8 @@ Relational database (PostgreSQL recommended)
 ### Vehicles
 
 * id (PK)
+* name
+* model
 * license_plate (Unique)
 * max_capacity_kg
 * odometer_km
@@ -596,7 +598,14 @@ Constraints:
 * id (PK)
 * email (Unique)
 * password_hash
-* role (Enum)
+* role_id (FK → Roles.id)
+
+---
+
+### Roles
+
+* id (PK)
+* name (Unique)
 
 ---
 

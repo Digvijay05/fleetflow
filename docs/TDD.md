@@ -138,10 +138,10 @@ Analytics Layer (Aggregation Engine + Reporting)
 
 | Component  | Selection             |
 | ---------- | --------------------- |
-| Language   | TypeScript            |
-| Framework  | NestJS                |
+| Language   | Python 3.12+          |
+| Framework  | FastAPI               |
 | API Style  | REST                  |
-| Validation | Zod / class-validator |
+| Validation | Pydantic V2           |
 | Auth       | JWT                   |
 
 ---
@@ -151,8 +151,8 @@ Analytics Layer (Aggregation Engine + Reporting)
 | Component      | Selection      |
 | -------------- | -------------- |
 | Type           | PostgreSQL     |
-| ORM            | Prisma         |
-| Migration Tool | Prisma Migrate |
+| ORM            | SQLAlchemy 2.0 (Async)     |
+| Migration Tool | Alembic                    |
 
 ---
 
@@ -251,6 +251,7 @@ In Shop → Available
 
 On Duty
 Off Duty
+On Trip
 Suspended
 
 ---
@@ -352,6 +353,8 @@ Blocking:
 | From      | To        | Trigger        |
 | --------- | --------- | -------------- |
 | Off Duty  | On Duty   | Manual toggle  |
+| On Duty   | On Trip   | Trip dispatched|
+| On Trip   | On Duty   | Trip completed |
 | On Duty   | Suspended | Violation      |
 | Suspended | Off Duty  | Review cleared |
 

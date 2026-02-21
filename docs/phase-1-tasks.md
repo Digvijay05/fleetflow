@@ -13,32 +13,32 @@ Establish the foundational authentication, database setup, and authorization lay
 ## 2. Backend Tasks (Detailed & Atomic)
 
 * **Project Scaffolding**
-  * **Description:** Initialize backend repository (NestJS/Express), configure TypeScript, Prettier, and ESLint. Setup `package.json` with scripts.
-  * **Expected Output:** Bootstrapped backend service with `npm run dev` running locally.
+  * **Description:** Initialize backend repository (Python/FastAPI), configure Ruff and pytest. Setup `pyproject.toml` via `uv`.
+  * **Expected Output:** Bootstrapped backend service with local dev server running.
   * **Dependencies:** None
 
 * **Environment Configuration**
-  * **Description:** Set up `.env` architecture and a configuration validation module (e.g., Zod) for expected variable types (`DATABASE_URL`, `JWT_SECRET`).
+  * **Description:** Set up `.env` architecture and a configuration validation module (pydantic-settings) for expected variable types (`DATABASE_URL`, `JWT_SECRET`).
   * **Expected Output:** Environment typed schema mapping.
   * **Dependencies:** Project Scaffolding
 
 * **Database Setup**
-  * **Description:** Configure PostgreSQL via local Docker-compose, initialize ORM (e.g., Prisma) and connect backend.
+  * **Description:** Configure PostgreSQL via local Docker-compose, initialize SQLAlchemy async engine and connect backend.
   * **Expected Output:** Active local relational database connecting logging output to backend.
   * **Dependencies:** Environment Configuration
 
 * **Role Model Creation**
-  * **Description:** Write ORM schema to construct the `roles` table. 
-  * **Expected Output:** DDL schema for roles definition.
+  * **Description:** Write SQLAlchemy ORM schema to construct the `roles` table. 
+  * **Expected Output:** ORM schema for roles definition.
   * **Dependencies:** Database Setup
 
 * **User Model Creation**
-  * **Description:** Write ORM schema to construct the `users` table linked to the `roles` table. Include email, password_hash, and role_id.
-  * **Expected Output:** DDL schema for users definition.
+  * **Description:** Write SQLAlchemy ORM schema to construct the `users` table linked to the `roles` table. Include email, password_hash, and role_id.
+  * **Expected Output:** ORM schema for users definition.
   * **Dependencies:** Role Model Creation
 
 * **Initial Migrations**
-  * **Description:** Generate SQL constraints and execute the structural schema upward migration inside the database.
+  * **Description:** Generate Alembic auto-migrations and execute the structural schema upward migration inside the database.
   * **Expected Output:** Live database structural reflection.
   * **Dependencies:** User Model Creation
 
@@ -48,32 +48,32 @@ Establish the foundational authentication, database setup, and authorization lay
   * **Dependencies:** Initial Migrations
 
 * **Password Hashing**
-  * **Description:** Utilize `bcrypt` library to inject automated salt and hashing cycles (12 rounds) intercepting password additions.
+  * **Description:** Utilize `bcrypt` (via passlib) to inject automated salt and hashing cycles intercepting password additions.
   * **Expected Output:** Secure payload transformation helper.
   * **Dependencies:** Project Scaffolding
 
 * **JWT/Session Setup**
-  * **Description:** Incorporate JSON Web Token service enforcing 1-hour expirations containing `userId` and `role` claims.
+  * **Description:** Incorporate PyJWT service enforcing 1-hour expirations containing `user_id` and `role` claims.
   * **Expected Output:** Encrypted string generation helper.
   * **Dependencies:** Environment Configuration
 
 * **Input Validation**
-  * **Description:** Architect schema-first (Zod / class-validator) middleware on endpoints preventing malformed traffic processing.
-  * **Expected Output:** Standardized 400 Bad Request error outputs on malformed payload injections.
+  * **Description:** Architect Pydantic V2 schemas on endpoints preventing malformed traffic processing.
+  * **Expected Output:** Standardized 422 Unprocessable Entity error outputs on malformed payload injections.
   * **Dependencies:** Project Scaffolding
 
 * **Login Endpoint**
-  * **Description:** Expose `POST /login` connecting validation, hashing, database verification, and JWT issuance into an endpoint pipeline.
+  * **Description:** Expose `POST /api/v1/auth/login` connecting validation, hashing, database verification, and JWT issuance into an endpoint pipeline.
   * **Expected Output:** Active returning controller logic.
   * **Dependencies:** Input Validation, JWT/Session Setup, Seed Data, Password Hashing
 
 * **RBAC Middleware**
-  * **Description:** Intercept request paths, unpack JWT assertions, match current role against route-required credentials, pass or block processing.
+  * **Description:** Implement FastAPI `Depends()` guards, unpack JWT assertions, match current role against route-required credentials, pass or block processing.
   * **Expected Output:** Protected router logic yielding 403 blocks.
   * **Dependencies:** Login Endpoint
 
 * **Basic Logging**
-  * **Description:** Inject structured logger interceptors (e.g., Pino/Winston).
+  * **Description:** Inject structured logger configuration.
   * **Expected Output:** Emits organized, timestamped request tracing.
   * **Dependencies:** Project Scaffolding
 
@@ -102,7 +102,7 @@ Establish the foundational authentication, database setup, and authorization lay
   * **Dependencies:** Login Page
 
 * **API Integration**
-  * **Description:** Abstract remote interaction wrapper logic via Axios. Call `POST /login` payload logic block.
+  * **Description:** Abstract remote interaction wrapper logic via Axios. Call `POST /api/v1/auth/login` payload logic block.
   * **Expected Output:** Triggering XHR/Fetch external routing events.
   * **Dependencies:** Form Validation
 
