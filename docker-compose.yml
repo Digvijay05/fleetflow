@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: fleetflow_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-fleetflow}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-fleetflow}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - fleetflow_network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: fleetflow_backend
+    ports:
+      - "8001:8000"
+    environment:
+      - APP_NAME=FleetFlow
+      - ENVIRONMENT=production
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-fleetflow}
+      - JWT_SECRET=${JWT_SECRET:-super_secret_key_change_in_production}
+      - CORS_ORIGINS=["http://localhost:5173", "http://localhost", "http://localhost:80"]
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - fleetflow_network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=http://localhost:8001/api/v1
+    container_name: fleetflow_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - fleetflow_network
+
+volumes:
+  postgres_data:
+
+
+networks:
+  fleetflow_network:
+    driver: bridge
